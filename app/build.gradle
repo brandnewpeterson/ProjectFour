@@ -21,9 +21,11 @@ android {
     productFlavors {
         free {
             applicationId "com.udacity.gradle.builditbigger.free"
+            buildConfigField "boolean", "PAID_VERSION", "false"
         }
         paid {
             applicationId "com.udacity.gradle.builditbigger.paid"
+            buildConfigField "boolean", "PAID_VERSION", "true"
         }
     }
 }
@@ -48,5 +50,5 @@ dependencies {
     //androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    freeCompile 'com.google.android.gms:play-services-ads:8.4.0'
 }

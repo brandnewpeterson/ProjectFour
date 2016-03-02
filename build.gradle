@@ -18,19 +18,12 @@ allprojects {
     }
 }
 
-task startGCEAndTest(dependsOn: ":backend:appengineRun") {
+task startGCE(dependsOn: [':backend:appengineRun'])
+task stopGCE(dependsOn: [':backend:appengineStop'])
+task runTests(dependsOn: [':app:connectedAndroidTest'])
 
-    evaluationDependsOn ":backend"
+tasks.findByPath('startGCE').mustRunAfter tasks.findByPath('stopGCE')
+tasks.findByPath('runTests').mustRunAfter tasks.findByPath("startGCE")
+tasks.findByPath('stopGCE').mustRunAfter tasks.findByPath("runTests")
 
-    project(":backend") {
-        appengine {
-            httpPort = 9090//Using different port than the default for test purposes.
-            daemon true
-        }
-    }
-    doLast {
-        println "GCE started."
-        tasks.test
-    }
-}
-
+//Run 'gradle runTests' to bring up GCE server, test, and then shutddown server in correct order.
